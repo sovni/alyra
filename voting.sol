@@ -28,6 +28,8 @@ contract Voting is Ownable{
     uint private proposalIndex;
     uint private winningProposalId;
     uint private voteCountMax;
+    uint private nbVoters;
+
     WorkflowStatus private votingStatus;
     mapping(uint => Proposal) private proposals;
     mapping(address => Voter) private voters;
@@ -50,6 +52,7 @@ contract Voting is Ownable{
 
     function startProposalsRegistration() public onlyOwner {
         require(votingStatus == WorkflowStatus.RegisteringVoters, "Allowed only after voter registration phase");
+        require(nbVoters > 0, "No voters registered");
 
         votingStatus = WorkflowStatus.ProposalsRegistrationStarted;
         emit WorkflowStatusChange(WorkflowStatus.RegisteringVoters, WorkflowStatus.ProposalsRegistrationStarted);
@@ -58,6 +61,7 @@ contract Voting is Ownable{
 
     function stopProposalsRegistration() public onlyOwner {
         require(votingStatus == WorkflowStatus.ProposalsRegistrationStarted, "Allowed only during proposal registration phase");
+        require(proposalIndex > 1, "No proposal submitted yet");
 
         votingStatus = WorkflowStatus.ProposalsRegistrationEnded;
         emit WorkflowStatusChange(WorkflowStatus.ProposalsRegistrationStarted, WorkflowStatus.ProposalsRegistrationEnded);
@@ -74,6 +78,7 @@ contract Voting is Ownable{
 
     function stopVotingSession() public onlyOwner {
         require(votingStatus == WorkflowStatus.VotingSessionStarted, "Allowed only during voting phase");
+        require(voteCountMax > 0, "No vote submitted yet");
 
         votingStatus = WorkflowStatus.VotingSessionEnded;
         emit WorkflowStatusChange(WorkflowStatus.VotingSessionStarted, WorkflowStatus.VotingSessionEnded);
@@ -90,6 +95,7 @@ contract Voting is Ownable{
 
         voters[_address].isRegistered = true;
         voters[_address].hasVoted = false;
+        nbVoters++;
         emit VoterRegistered(_address);
     }
 
@@ -121,5 +127,15 @@ contract Voting is Ownable{
         require(votingStatus == WorkflowStatus.VotesTallied, "Voting session not finished yet");
         require(winningProposalId > 0, "No vote done - no result");
         return proposals[winningProposalId].description;
+    }
+
+    function getWinnngVotes() public view returns (uint) {
+        require(votingStatus == WorkflowStatus.VotesTallied, "Voting session not finished yet");
+        require(winningProposalId > 0, "No vote done - no result");
+        return proposals[winningProposalId].voteCount;
+    }
+    
+    function getVotingStatus() public view returns (WorkflowStatus) {
+        return votingStatus;
     }
 }
