@@ -22,6 +22,8 @@ contract Crowdsale is Ownable {
   
    // function to receive ETH
    function deposit() payable external {
+       require(msg.value > 0, "no funds sent");
+       require(msg.sender != address(0), "Address 0 not allowed");
        balances[msg.sender] = balances[msg.sender].add(msg.value);
        savedBalance = savedBalance.add(msg.value);
        escrow.send(msg.value);
