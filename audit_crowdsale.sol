@@ -3,10 +3,10 @@ pragma solidity ^0.5.12;
 contract Crowdsale {
    using SafeMath for uint256;
  
-   address public owner; // the owner of the contract
-   address public escrow; // wallet to collect raised ETH
-   uint256 public savedBalance = 0; // Total amount raised in ETH
-   mapping (address => uint256) public balances; // Balances in incoming Ether
+   address private owner; // the owner of the contract
+   address private escrow; // wallet to collect raised ETH
+   uint256 private savedBalance = 0; // Total amount raised in ETH
+   mapping (address => uint256) private balances; // Balances in incoming Ether
  
    // Initialization
    function Crowdsale(address _escrow) public{
