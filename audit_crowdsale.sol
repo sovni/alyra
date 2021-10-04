@@ -1,5 +1,5 @@
-pragma solidity ^0.5.12;
- 
+pragma solidity ^0.8.9;
+
 contract Crowdsale {
    using SafeMath for uint256;
  
