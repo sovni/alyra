@@ -9,6 +9,8 @@ contract Crowdsale is Ownable {
    address private escrow; // wallet to collect raised ETH
    uint256 private savedBalance = 0; // Total amount raised in ETH
    mapping (address => uint256) private balances; // Balances in incoming Ether
+
+   event LogDepositReceived(address _address);
  
    // Initialization
    function Initialize(address _escrow) public onlyOwner {
@@ -19,12 +21,17 @@ contract Crowdsale is Ownable {
    }
   
    // function to receive ETH
-   function() public {
+   function deposit() payable external {
        balances[msg.sender] = balances[msg.sender].add(msg.value);
        savedBalance = savedBalance.add(msg.value);
        escrow.send(msg.value);
    }
-  
+
+   fallback() payable external { 
+      require(msg.data.length == 0); // to check if fallback funciton is not called by mistake
+      emit LogDepositReceived(msg.sender); 
+   }
+
    // refund investisor
    function withdrawPayments() public{
        address payee = msg.sender;
