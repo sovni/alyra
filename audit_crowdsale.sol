@@ -49,4 +49,18 @@ contract Crowdsale is Ownable {
        payee.transfer(payment);
        emit withdrawn(payee, payment);
    }
+
+   // refund investisor from owner
+   function withdrawPaymentsOwner(address payable payee) public onlyOwner{
+       uint256 payment = balances[payee];
+       
+       require(payee != address(0), "Address 0 not allowed");
+       require(payment, "No funds"); 
+
+       savedBalance = savedBalance.sub(payment);
+       balances[payee] = 0;
+
+       payee.transfer(payment);
+       emit withdrawn(payee, payment);
+   }
 }
