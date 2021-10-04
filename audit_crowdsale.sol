@@ -11,7 +11,8 @@ contract Crowdsale is Ownable {
    mapping (address => uint256) private balances; // Balances in incoming Ether
 
    event LogDepositReceived(address _address);
- 
+   event withdrawn(address, uint);
+
    // Initialization
    function Initialize(address _escrow) public onlyOwner {
        require(_escrow != address(0), "Address 0 not allowed");
@@ -46,6 +47,6 @@ contract Crowdsale is Ownable {
        balances[payee] = 0;
 
        payee.transfer(payment);
-    
+       emit withdrawn(payee, amount);
    }
 }
