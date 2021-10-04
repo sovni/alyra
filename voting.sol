@@ -78,7 +78,7 @@ contract Voting is Ownable{
 
     function stopVotingSession() public onlyOwner {
         require(votingStatus == WorkflowStatus.VotingSessionStarted, "Allowed only during voting phase");
-        require(voteCountMax > 0, "No vote submitted yet");
+        require(voteCountMaxg > 0, "No vote submitted yet");
 
         votingStatus = WorkflowStatus.VotingSessionEnded;
         emit WorkflowStatusChange(WorkflowStatus.VotingSessionStarted, WorkflowStatus.VotingSessionEnded);
