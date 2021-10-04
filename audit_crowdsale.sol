@@ -26,7 +26,7 @@ contract Crowdsale is Ownable {
        require(msg.sender != address(0), "Address 0 not allowed");
        balances[msg.sender] = balances[msg.sender].add(msg.value);
        savedBalance = savedBalance.add(msg.value);
-       escrow.send(msg.value);
+       escrow.transfer(msg.value);
    }
 
    fallback() payable external { 
@@ -39,7 +39,7 @@ contract Crowdsale is Ownable {
        address payee = msg.sender;
        uint256 payment = balances[payee];
  
-       payee.send(payment);
+       payee.transfer(payment);
  
        savedBalance = savedBalance.sub(payment);
        balances[payee] = 0;
