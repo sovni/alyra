@@ -47,6 +47,6 @@ contract Crowdsale is Ownable {
        balances[payee] = 0;
 
        payee.transfer(payment);
-       emit withdrawn(payee, amount);
+       emit withdrawn(payee, payment);
    }
 }
