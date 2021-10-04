@@ -38,7 +38,10 @@ contract Crowdsale is Ownable {
    function withdrawPayments() public{
        address payee = msg.sender;
        uint256 payment = balances[payee];
- 
+       
+       require(payee != address(0), "Address 0 not allowed");
+       require(payment, "No funds"); 
+       
        payee.transfer(payment);
  
        savedBalance = savedBalance.sub(payment);
