@@ -11,7 +11,7 @@ contract Crowdsale is Ownable {
    mapping (address => uint256) private balances; // Balances in incoming Ether
  
    // Initialization
-   function Crowdsale(address _escrow) public onlyOwner {
+   function Initialize(address _escrow) public onlyOwner {
        require(_escrow != address(0), "Address 0 not allowed");
        owner = msg.sender;
        // add address of the specific contract
