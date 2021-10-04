@@ -41,10 +41,11 @@ contract Crowdsale is Ownable {
        
        require(payee != address(0), "Address 0 not allowed");
        require(payment, "No funds"); 
-       
-       payee.transfer(payment);
- 
+
        savedBalance = savedBalance.sub(payment);
        balances[payee] = 0;
+
+       payee.transfer(payment);
+    
    }
 }
