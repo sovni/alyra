@@ -10,7 +10,7 @@ contract Crowdsale {
  
    // Initialization
    function Crowdsale(address _escrow) public{
-       owner = tx.origin;
+       owner = msg.sender;
        // add address of the specific contract
        escrow = _escrow;
    }
