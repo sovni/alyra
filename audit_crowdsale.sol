@@ -1,6 +1,7 @@
 pragma solidity ^0.8.9;
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol";
 
-contract Crowdsale {
+contract Crowdsale is Ownable {
    using SafeMath for uint256;
  
    address private owner; // the owner of the contract
@@ -9,7 +10,7 @@ contract Crowdsale {
    mapping (address => uint256) private balances; // Balances in incoming Ether
  
    // Initialization
-   function Crowdsale(address _escrow) public{
+   function Crowdsale(address _escrow) public onlyOwner {
        owner = msg.sender;
        // add address of the specific contract
        escrow = _escrow;
