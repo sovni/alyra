@@ -3,3 +3,4 @@ storage/node_modules
 todo/node_modules
 truffle/simple-storage-truffle/node_modules
 truffle/simple-storage-truffle/.secret
+truffle/vote/node_modules
