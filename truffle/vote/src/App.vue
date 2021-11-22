@@ -1,26 +1,44 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div v-if="isDrizzleInitialized" id="app">
+    <h1>Vote</h1>
+    <drizzle-contract-form
+      contractName="Vote"
+      method="voterRegistration"
+      :placeholders="['Name']"
+    />
+    <h2>Nb Voters: {{ getNbVoters() }} </h2>
+
+  </div>
+  <div v-else>
+    Loading application...
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import { mapGetters } from "vuex"
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  name: "app",
+  computed: {
+    ...mapGetters("drizzle", ["drizzleInstance", "isDrizzleInitialized"]),
+    ...mapGetters("contracts", ["getContractData"]),
+    getNbVoters() {
+      let data = this.getContractData({
+        contract: "Vote",
+        method: "getNbVoters"
+      });
+      if (data === "loading") return false;
+      return data
+    },
+    utils() {
+      return this.drizzleInstance.web3.utils
+    }
+  },
+  created() {
+    this.$store.dispatch("drizzle/REGISTER_CONTRACT", {
+      contractName: "Vote",
+      method: "getNbVoters",
+      methodArgs: []
+    })
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

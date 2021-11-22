@@ -31,8 +31,8 @@ contract Vote is Ownable{
     uint private nbVoters;
 
     WorkflowStatus private votingStatus;
-    mapping(uint => Proposal) private proposals;
-    mapping(address => Voter) private voters;
+    mapping(uint => Proposal) public proposals;
+    mapping(address => Voter) public voters;
 
     event VoterRegistered(address voterAddress);
     event ProposalsRegistrationStarted();
@@ -129,7 +129,7 @@ contract Vote is Ownable{
         return proposals[winningProposalId].description;
     }
 
-    function getWinnngVotes() public view returns (uint) {
+    function getWinningVotes() public view returns (uint) {
         require(votingStatus == WorkflowStatus.VotesTallied, "Voting session not finished yet");
         require(winningProposalId > 0, "No vote done - no result");
         return proposals[winningProposalId].voteCount;
@@ -137,5 +137,9 @@ contract Vote is Ownable{
     
     function getVotingStatus() public view returns (WorkflowStatus) {
         return votingStatus;
+    }
+
+    function getNbVoters() public view returns (uint) {
+        return nbVoters;
     }
 }

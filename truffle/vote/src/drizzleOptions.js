@@ -10,7 +10,7 @@ const options = {
 // The contracts to monitor
   contracts: [Vote],
   events: {
-    //Guestbook: ["SignatureAdded"]
+    Vote: ["VoterRegistered", "ProposalsRegistrationStarted", "ProposalsRegistrationEnded", "ProposalRegistered", "VotingSessionStarted", "VotingSessionEnded", "Voted", "VotesTallied", "WorkflowStatusChange"]
   },
   polls: {
     // check accounts ever 15 seconds
