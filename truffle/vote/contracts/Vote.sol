@@ -1,10 +1,10 @@
 // voting.sol
 // SPDX-License-Identifier: MIT
 pragma solidity 0.6.11;
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/solc-0.6/contracts/access/Ownable.sol";
+import "./Ownable.sol";
 
 
-contract Voting is Ownable{
+contract Vote is Ownable{
     struct Voter {
         bool isRegistered;
         bool hasVoted;
@@ -31,8 +31,8 @@ contract Voting is Ownable{
     uint private nbVoters;
 
     WorkflowStatus private votingStatus;
-    mapping(uint => Proposal) private proposals;
-    mapping(address => Voter) private voters;
+    mapping(uint => Proposal) public proposals;
+    mapping(address => Voter) public voters;
 
     event VoterRegistered(address voterAddress);
     event ProposalsRegistrationStarted();
@@ -78,7 +78,7 @@ contract Voting is Ownable{
 
     function stopVotingSession() public onlyOwner {
         require(votingStatus == WorkflowStatus.VotingSessionStarted, "Allowed only during voting phase");
-        require(voteCountMaxg > 0, "No vote submitted yet");
+        require(voteCountMax > 0, "No vote submitted yet");
 
         votingStatus = WorkflowStatus.VotingSessionEnded;
         emit WorkflowStatusChange(WorkflowStatus.VotingSessionStarted, WorkflowStatus.VotingSessionEnded);
@@ -129,7 +129,7 @@ contract Voting is Ownable{
         return proposals[winningProposalId].description;
     }
 
-    function getWinnngVotes() public view returns (uint) {
+    function getWinningVotes() public view returns (uint) {
         require(votingStatus == WorkflowStatus.VotesTallied, "Voting session not finished yet");
         require(winningProposalId > 0, "No vote done - no result");
         return proposals[winningProposalId].voteCount;
@@ -137,5 +137,9 @@ contract Voting is Ownable{
     
     function getVotingStatus() public view returns (WorkflowStatus) {
         return votingStatus;
+    }
+
+    function getNbVoters() public view returns (uint) {
+        return nbVoters;
     }
 }
